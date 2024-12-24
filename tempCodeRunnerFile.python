@@ -1,0 +1,40 @@
+def find_minimum_platforms(arr, dep):
+    # Convert time s
+    arr_minutes = [int(time.split(':')[0]) * 60 + int(time.split(':')[1]) for time in arr]
+    dep_minutes = [int(time.split(':')[0]) * 60 + int(time.split(':')[1]) for time in dep]
+
+    # Sort arrival and departure times
+    arr_minutes.sort()
+    dep_minutes.sort()
+
+    # Initialize variables
+    n = len(arr_minutes)
+    platform_needed = 0
+    max_platforms = 0
+    i = 0
+    j = 0
+
+    # Process arrival and departure times
+    while i < n and j < n:
+        # If a train arrives before the next departure
+        if arr_minutes[i] <= dep_minutes[j]:
+            platform_needed += 1
+            max_platforms = max(max_platforms, platform_needed)
+            i += 1
+        else:  # Train departs before or at the same time as the next arrival
+            platform_needed -= 1
+            j += 1
+
+    return max_platforms
+
+# Example usage 1
+arr = ["9:00", "9:40", "9:50", "11:00", "15:00", "18:00"]
+dep = ["9:10", "12:00", "11:20", "11:30", "19:00", "20:00"]
+
+print( find_minimum_platforms(arr, dep))
+
+# Example usage 2
+arr = ["9:00", "9:40"]
+dep = ["9:10", "12:00"]
+
+print( find_minimum_platforms(arr, dep))
